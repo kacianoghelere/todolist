@@ -18,11 +18,12 @@ class TodoForm extends Component {
   }
 
   onChangeText(text) {
-    this.setState({ text })
+    this.setState({ text });
   }
 
   onPress() {
-    this.props.addTodo(this.state.text)
+    this.props.addTodo(this.state.text);
+    this.setState({ text: '' });
   }
 
   render() {
