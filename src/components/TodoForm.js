@@ -2,32 +2,35 @@ import React, { Component } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
-import { addTodo } from '../actions';
+import { addTodo, setTodoText, updateTodo } from '../actions';
 import Input from './Input';
 
 class TodoForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      text: ''
-    };
-
     this.onChangeText = this.onChangeText.bind(this);
     this.onPress = this.onPress.bind(this);
   }
 
   onChangeText(text) {
-    this.setState({ text });
+    this.props.setTodoText(text);
   }
-
+  
   onPress() {
-    this.props.addTodo(this.state.text);
-    this.setState({ text: '' });
+    const { id, text } = this.props.editingTodo;
+
+    if (id) {
+      return this.props.updateTodo(this.props.editingTodo);
+    }
+
+    return this.props.addTodo(text);
   }
 
   render() {
-    const { text } = this.state;
+    const { id, text } = this.props.editingTodo;
+
+    const buttonTitle = id ? 'Atualizar' : 'Salvar';
 
     return (
       <View style={styles.formContainer}>
@@ -39,7 +42,7 @@ class TodoForm extends Component {
         <View style={styles.buttonContainer}>
           <Button
             onPress={this.onPress}
-            title="Salvar" />
+            title={buttonTitle} />
         </View>
       </View>
     )
@@ -55,13 +58,20 @@ const styles = StyleSheet.create({
     padding: 10
   },
   inputContainer: {
-    flex: 4
+    flex: 3
   },
   buttonContainer: {
-    flex: 1
+    flex: 1,
+    justifyContent: 'center'
   }
 });
 
-export default connect(null, {
-  addTodo
-})(TodoForm);
+const mapStateToProps = ({ editingTodo }) => ({ editingTodo });
+
+const mapDispatchToProps = {
+  addTodo,
+  setTodoText,
+  updateTodo
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoForm);
