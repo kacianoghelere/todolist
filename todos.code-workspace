@@ -6,6 +6,10 @@
 	],
 	"settings": {
 		"editor.tabSize": 2,
-		"emmet.triggerExpansionOnTab": true
+		"emmet.triggerExpansionOnTab": true,
+		"editor.parameterHints": false,
+		"emmet.includeLanguages": {
+			"javascript": "jsx"
+		}
 	}
 }
